@@ -3,6 +3,8 @@ package com.interest.points.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "points_of_interest")
@@ -12,21 +14,22 @@ public class Poi implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private int x;
+    @Column(nullable = false)
     private int y;
-    @ManyToOne(targetEntity = Category.class)
-    private Category category;
+    @Column(nullable = false)
+    @ManyToMany
+    @JoinTable(
+            name = "poi_category",
+            joinColumns = @JoinColumn(name = "poi_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories;
 
     public Poi() {
-    }
-
-    public Poi(Long id, String name, int x, int y, Category category) {
-        this.id = id;
-        this.name = name;
-        this.x = x;
-        this.y = y;
-        this.category = category;
     }
 
     public Long getId() {
@@ -61,11 +64,11 @@ public class Poi implements Serializable {
         this.y = y;
     }
 
-    public Category getCategory() {
-        return category;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }
