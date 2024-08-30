@@ -1,5 +1,6 @@
 package com.interest.points.service;
 
+import com.interest.points.exceptions.ResourceNotFoundException;
 import com.interest.points.mapper.ModelMapperConverter;
 import com.interest.points.model.Category;
 import com.interest.points.model.Poi;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,13 +32,23 @@ public class PoiService {
                 .collect(Collectors.toList());
     }
 
+    public List<Poi> findPoisByCategoryAndProximity(List<String> categories, int refX, int refY, int maxDistance) {
+        return poiRepository.findAll().stream()
+                .filter(poi -> poi.getCategories().stream()
+                        .anyMatch(category -> categories.contains(category.getName())))
+                .filter(poi -> distance(refX, refY, poi.getX(), poi.getY()) <= maxDistance)
+                .collect(Collectors.toList());
+    }
+
     public Poi createPoi(PoiVO poiVO) {
-        var category = categoryRepository.findByName(poiVO.getCategory()).orElseThrow(() ->
-                new ResourceNotFoundException("Category not found"));
 
-        var poi = ModelMapperConverter.parseObject(poiVO, Poi.class);
+        Set<Category> categories = poiVO.getCategories().stream()
+                .map(categoryName -> categoryRepository.findByName(categoryName)
+                        .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + categoryName)))
+                .collect(Collectors.toSet());
 
-        poi.setCategory(category);
+        Poi poi = ModelMapperConverter.parseObject(poiVO, Poi.class);
+        poi.setCategories(categories);
 
         return poiRepository.save(poi);
     }
