@@ -1,8 +1,11 @@
 INSERT INTO categories (name)
-VALUES ('Lanchonete'),
-       ('Posto'),
-       ('Joalheria'),
-       ('Floricultura'),
-       ('Pub'),
-       ('Supermercado'),
-       ('Churrascaria');
+VALUES ('Entretenimento'),
+       ('Saúde'),
+       ('Comércio'),
+       ('Esportes'),
+       ('Tecnologia'),
+       ('Educação'),
+       ('Serviços'),
+       ('Lazer'),
+       ('Alimentação');
+

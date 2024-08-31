@@ -4,5 +4,7 @@ CREATE TABLE IF NOT EXISTS points_of_interest
     name VARCHAR(255) NOT NULL,
     x    INT          NOT NULL,
     y    INT          NOT NULL,
-    category_id BIGINT REFERENCES categories(id)
+    opening_hours VARCHAR(255) NOT NULL,
+    closing_hours VARCHAR(255) NOT NULL,
+    influence_radius INT DEFAULT 0
 );
