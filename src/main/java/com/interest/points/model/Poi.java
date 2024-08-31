@@ -3,6 +3,7 @@ package com.interest.points.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,22 +15,33 @@ public class Poi implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
     private int x;
-    @Column(nullable = false)
     private int y;
-    @Column(nullable = false)
+    private String openingHours;
+    private String closingHours;
+    private int influenceRadius;
     @ManyToMany
     @JoinTable(
             name = "poi_category",
             joinColumns = @JoinColumn(name = "poi_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();;
 
     public Poi() {
+    }
+
+    public Poi(Long id, String name, int x, int y, String openingHours, String closingHours,
+               int influenceRadius, Set<Category> categories) {
+        this.id = id;
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.openingHours = openingHours;
+        this.closingHours = closingHours;
+        this.influenceRadius = influenceRadius;
+        this.categories = categories;
     }
 
     public Long getId() {
@@ -62,6 +74,30 @@ public class Poi implements Serializable {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public String getOpeningHours() {
+        return openingHours;
+    }
+
+    public void setOpeningHours(String openingHours) {
+        this.openingHours = openingHours;
+    }
+
+    public String getClosingHours() {
+        return closingHours;
+    }
+
+    public void setClosingHours(String closingHours) {
+        this.closingHours = closingHours;
+    }
+
+    public int getInfluenceRadius() {
+        return influenceRadius;
+    }
+
+    public void setInfluenceRadius(int influenceRadius) {
+        this.influenceRadius = influenceRadius;
     }
 
     public Set<Category> getCategories() {
