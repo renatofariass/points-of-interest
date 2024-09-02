@@ -1,14 +1,13 @@
-package com.interest.points.vo;
+package com.interest.points.vo.poi;
 
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PoiVoRequest {
+public class PoiVORequest {
     @NotNull
     private String name;
     @NotNull
@@ -17,22 +16,20 @@ public class PoiVoRequest {
     private int y;
     private String openingHours;
     private String closingHours;
-    @NotNull
-    private int influenceRadius;
     @NotEmpty
-    private List<String> categories = new ArrayList<>();;
+    private List<String> categories = new ArrayList<>();
+    ;
 
-    public PoiVoRequest() {
+    public PoiVORequest() {
     }
 
-    public PoiVoRequest(String name, int x, int y, String openingHours, String closingHours, int influenceRadius,
+    public PoiVORequest(String name, int x, int y, String openingHours, String closingHours,
                         List<String> categories) {
         this.name = name;
         this.x = x;
         this.y = y;
         setOpeningHours(openingHours);
         setClosingHours(closingHours);
-        this.influenceRadius = influenceRadius;
         this.categories = categories;
     }
 
@@ -82,15 +79,6 @@ public class PoiVoRequest {
         } else {
             this.closingHours = closingHours;
         }
-    }
-
-    @NotNull
-    public int getInfluenceRadius() {
-        return influenceRadius;
-    }
-
-    public void setInfluenceRadius(@NotNull int influenceRadius) {
-        this.influenceRadius = influenceRadius;
     }
 
     public List<String> getCategories() {

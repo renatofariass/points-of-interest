@@ -1,27 +1,21 @@
-package com.interest.points.vo;
+package com.interest.points.vo.poi;
 
 
 import com.interest.points.model.Category;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class PoiVoResponse {
+public class PoiVOResponse {
     private Long id;
     private String name;
     private int x;
     private int y;
     private String openingHours;
     private String closingHours;
-    private int influenceRadius;
     private Set<Category> categories = new HashSet<>();;
 
-    public PoiVoResponse() {
+    public PoiVOResponse() {
     }
 
     public Long getId() {
@@ -70,14 +64,6 @@ public class PoiVoResponse {
 
     public void setClosingHours(String closingHours) {
         this.closingHours = closingHours;
-    }
-
-    public int getInfluenceRadius() {
-        return influenceRadius;
-    }
-
-    public void setInfluenceRadius(int influenceRadius) {
-        this.influenceRadius = influenceRadius;
     }
 
     public Set<Category> getCategories() {
