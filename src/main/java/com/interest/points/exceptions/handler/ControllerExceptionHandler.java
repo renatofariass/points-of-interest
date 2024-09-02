@@ -1,6 +1,7 @@
 package com.interest.points.exceptions.handler;
 
 import com.interest.points.exceptions.BadRequestException;
+import com.interest.points.exceptions.InvalidJwtAuthenticationException;
 import com.interest.points.exceptions.ResourceNotFoundException;
 import com.interest.points.exceptions.UnauthorizedException;
 import org.springframework.http.HttpHeaders;
@@ -56,6 +57,18 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
                 request.getDescription(false));
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(InvalidJwtAuthenticationException.class)
+    public final ResponseEntity<ExceptionResponse> handleInvalidJwtAuthenticationExceptions(
+            Exception ex, WebRequest request) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionResponse);
     }
 
     @Override
