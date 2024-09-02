@@ -1,4 +1,4 @@
-package com.interest.points.vos.poi;
+package com.interest.points.vos.point;
 
 
 import com.interest.points.model.Category;

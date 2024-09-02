@@ -1,4 +1,4 @@
-package com.interest.points.vo.user;
+package com.interest.points.vos.user;
 
 import com.interest.points.model.UserRole;
 import jakarta.validation.constraints.NotBlank;
