@@ -37,7 +37,7 @@ public class PointServices {
 
         var pointsList = pointsWithinProximity.stream()
                 .filter(point -> categories == null || categories.isEmpty() ||
-                        point.getCategories().stream().anyMatch(category -> categories.contains(category.getName())))
+                        categories.stream().anyMatch(category -> categories.contains(point.getCategory().getName())))
                 .filter(point -> PointUtils.distance(x, y, point.getX(), point.getY()) <= maxDistance)
                 .filter(point -> PointUtils.isOpenAt(LocalTime.now(), point.getOpeningHours(), point.getClosingHours()))
                 .collect(Collectors.toList());
@@ -53,20 +53,18 @@ public class PointServices {
         var pointsList = pointsWithinProximity.stream()
                 .filter(point -> PointUtils.distance(x, y, point.getX(), point.getY()) <= maxDistance)
                 .filter(point -> categories == null || categories.isEmpty() ||
-                        point.getCategories().stream().anyMatch(category -> categories.contains(category.getName())))
+                        categories.stream().anyMatch(category -> categories.contains(point.getCategory().getName())))
                 .collect(Collectors.toList());
 
         return ModelMapperConverter.parseListObjects(pointsList, PointVOResponse.class);
     }
 
     public PointVOResponse createPoint(PointVORequest pointVoRequest) {
-        Set<Category> categories = pointVoRequest.getCategories().stream()
-                .map(categoryName -> categoryRepository.findByName(categoryName)
-                        .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + categoryName)))
-                .collect(Collectors.toSet());
+        Category category = categoryRepository.findByName(pointVoRequest.getCategory())
+                        .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         Point point = ModelMapperConverter.parseObject(pointVoRequest, Point.class);
-        point.setCategories(categories);
+        point.setCategory(category);
 
         return ModelMapperConverter.parseObject(pointRepository.save(point), PointVOResponse.class);
     }

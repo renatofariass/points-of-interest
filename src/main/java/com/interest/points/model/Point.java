@@ -19,26 +19,20 @@ public class Point implements Serializable {
     private int y;
     private String openingHours;
     private String closingHours;
-    @ManyToMany
-    @JoinTable(
-            name = "point_categories",
-            joinColumns = @JoinColumn(name = "point_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private Set<Category> categories = new HashSet<>();
-    ;
+    @ManyToOne
+    private Category category;
 
     public Point() {
     }
 
-    public Point(Long id, String name, int x, int y, String openingHours, String closingHours, Set<Category> categories) {
+    public Point(Long id, String name, int x, int y, String openingHours, String closingHours, Category category) {
         this.id = id;
         this.name = name;
         this.x = x;
         this.y = y;
         this.openingHours = openingHours;
         this.closingHours = closingHours;
-        this.categories = categories;
+        this.category = category;
     }
 
     public Long getId() {
@@ -89,11 +83,11 @@ public class Point implements Serializable {
         this.closingHours = closingHours;
     }
 
-    public Set<Category> getCategories() {
-        return categories;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

@@ -13,7 +13,7 @@ public class PointVOResponse {
     private int y;
     private String openingHours;
     private String closingHours;
-    private Set<Category> categories = new HashSet<>();;
+    private Category  category;
 
     public PointVOResponse() {
     }
@@ -66,12 +66,12 @@ public class PointVOResponse {
         this.closingHours = closingHours;
     }
 
-    public Set<Category> getCategories() {
-        return categories;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
 

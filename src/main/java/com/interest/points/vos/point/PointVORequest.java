@@ -1,6 +1,7 @@
 package com.interest.points.vos.point;
 
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,21 +17,20 @@ public class PointVORequest {
     private int y;
     private String openingHours;
     private String closingHours;
-    @NotEmpty
-    private List<String> categories = new ArrayList<>();
-    ;
+    @NotBlank
+    private String category;
 
     public PointVORequest() {
     }
 
     public PointVORequest(String name, int x, int y, String openingHours, String closingHours,
-                          List<String> categories) {
+                          String category) {
         this.name = name;
         this.x = x;
         this.y = y;
         setOpeningHours(openingHours);
         setClosingHours(closingHours);
-        this.categories = categories;
+        this.category = category;
     }
 
     public String getName() {
@@ -81,12 +81,12 @@ public class PointVORequest {
         }
     }
 
-    public List<String> getCategories() {
-        return categories;
+    public @NotBlank String getCategory() {
+        return category;
     }
 
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
+    public void setCategory(@NotBlank String category) {
+        this.category = category;
     }
 }
 
