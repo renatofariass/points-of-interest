@@ -5,6 +5,5 @@ CREATE TABLE IF NOT EXISTS points_of_interest
     x    INT          NOT NULL,
     y    INT          NOT NULL,
     opening_hours VARCHAR(255) NOT NULL,
-    closing_hours VARCHAR(255) NOT NULL,
-    influence_radius INT DEFAULT 0
+    closing_hours VARCHAR(255) NOT NULL
 );
