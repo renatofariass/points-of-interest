@@ -1,6 +1,8 @@
 package com.interest.points.exceptions.handler;
 
+import com.interest.points.exceptions.BadRequestException;
 import com.interest.points.exceptions.ResourceNotFoundException;
+import com.interest.points.exceptions.UnauthorizedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -32,6 +34,30 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(
+            Exception ex, WebRequest request) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public final ResponseEntity<ExceptionResponse> handleUnauthorizedExceptions(
+            Exception ex, WebRequest request) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exceptionResponse);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
@@ -46,7 +72,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse(
+        ExceptionResponse exceptionResponse = new ExceptionResponseWithFieldErrors(
                 new Date(),
                 "Null or empty fields",
                 request.getDescription(false),

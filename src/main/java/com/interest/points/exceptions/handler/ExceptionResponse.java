@@ -11,19 +11,11 @@ public class ExceptionResponse implements Serializable {
     private Date timestamp;
     private String message;
     private String details;
-    private Map<String, String> fieldErrors;
 
     public ExceptionResponse(Date timestamp, String message, String details) {
         this.timestamp = timestamp;
         this.message = message;
         this.details = details;
-    }
-
-    public ExceptionResponse(Date timestamp, String message, String details, Map<String, String> fieldErrors) {
-        this.timestamp = timestamp;
-        this.message = message;
-        this.details = details;
-        this.fieldErrors = fieldErrors;
     }
 
     public Date getTimestamp() {
@@ -48,13 +40,5 @@ public class ExceptionResponse implements Serializable {
 
     public void setDetails(String details) {
         this.details = details;
-    }
-
-    public Map<String, String> getFieldErrors() {
-        return fieldErrors;
-    }
-
-    public void setFieldErrors(Map<String, String> fieldErrors) {
-        this.fieldErrors = fieldErrors;
     }
 }
