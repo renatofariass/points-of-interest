@@ -1,9 +1,8 @@
 package com.interest.points.controller;
 
-import com.interest.points.model.Poi;
 import com.interest.points.service.PoiService;
-import com.interest.points.vo.PoiVoRequest;
-import com.interest.points.vo.PoiVoResponse;
+import com.interest.points.vo.poi.PoiVORequest;
+import com.interest.points.vo.poi.PoiVOResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,14 +28,14 @@ public class PoiController {
     @Operation(summary = "Finds all Points", description = "Finds all Points",
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200",
-                            content = {@Content(array = @ArraySchema(schema = @Schema(implementation = PoiVoResponse.class)))
+                            content = {@Content(array = @ArraySchema(schema = @Schema(implementation = PoiVOResponse.class)))
                             }),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
             }
     )
     @GetMapping("/findAll")
-    public ResponseEntity<List<PoiVoResponse>> findAllPois() {
+    public ResponseEntity<List<PoiVOResponse>> findAllPois() {
         return ResponseEntity.ok().body(poiService.findAllPois());
     }
 
@@ -44,39 +43,39 @@ public class PoiController {
             description = "Finds Points of Interest by Proximity and Category",
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200",
-                            content = {@Content(array = @ArraySchema(schema = @Schema(implementation = PoiVoResponse.class)))
+                            content = {@Content(array = @ArraySchema(schema = @Schema(implementation = PoiVOResponse.class)))
                             }),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
             }
     )
-    @GetMapping("/proximity")
-    public ResponseEntity<List<PoiVoResponse>> findPoisByProximity(
+    @GetMapping("/nearby")
+    public ResponseEntity<List<PoiVOResponse>> findPoisByProximity(
             @RequestParam(name = "x") int x,
             @RequestParam(name = "y") int y,
-            @RequestParam(name = "distance") int distance,
+            @RequestParam(name = "distance", defaultValue = "1000") int distance,
             @RequestParam(name = "categories", required = false) List<String> categories,
             @RequestParam(name = "openingHours", required = false) boolean openingHours){
 
         if (openingHours) {
-            return ResponseEntity.ok().body(poiService.findPoisByProximity(categories, x, y, distance));
+            return ResponseEntity.ok().body(poiService.findNearbyPois(categories, x, y, distance));
         }
 
-        return ResponseEntity.ok().body(poiService.findPoisByProximityWithoutTimeFilter(categories, x, y, distance));
+        return ResponseEntity.ok().body(poiService.findNearbyPoisWithoutTimeFilter(categories, x, y, distance));
     }
 
     @Operation(summary = "Creates a new Point of Interest", description = "Creates a new Point of Interest",
             responses = {
                     @ApiResponse(description = "Created", responseCode = "201",
-                            content = {@Content(schema = @Schema(implementation = PoiVoResponse.class))
+                            content = {@Content(schema = @Schema(implementation = PoiVOResponse.class))
                             }),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
             }
     )
     @PostMapping
-    public ResponseEntity<PoiVoResponse> createPoi(@Valid @RequestBody PoiVoRequest obj) {
-        PoiVoResponse poi = poiService.createPoi(obj);
+    public ResponseEntity<PoiVOResponse> createPoi(@Valid @RequestBody PoiVORequest obj) {
+        PoiVOResponse poi = poiService.createPoi(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(poi.getId()).toUri();
         return ResponseEntity.created(uri).body(poi);
     }

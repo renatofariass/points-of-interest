@@ -1,4 +1,4 @@
-INSERT INTO poi_category (poi_id, category_id)
+INSERT INTO poi_category (point_id, category_id)
 VALUES ((SELECT id FROM points_of_interest WHERE name = 'PADARIA DO ZECA'),
         (SELECT id FROM categories WHERE name = 'Alimentação')),
        ((SELECT id FROM points_of_interest WHERE name = 'SUPERMERCADO CENTRAL'),

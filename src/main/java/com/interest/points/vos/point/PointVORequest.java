@@ -1,4 +1,4 @@
-package com.interest.points.vo.poi;
+package com.interest.points.vos.poi;
 
 
 import jakarta.validation.constraints.NotEmpty;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PoiVORequest {
+public class PointVORequest {
     @NotNull
     private String name;
     @NotNull
@@ -20,11 +20,11 @@ public class PoiVORequest {
     private List<String> categories = new ArrayList<>();
     ;
 
-    public PoiVORequest() {
+    public PointVORequest() {
     }
 
-    public PoiVORequest(String name, int x, int y, String openingHours, String closingHours,
-                        List<String> categories) {
+    public PointVORequest(String name, int x, int y, String openingHours, String closingHours,
+                          List<String> categories) {
         this.name = name;
         this.x = x;
         this.y = y;

@@ -1,4 +1,4 @@
-package com.interest.points.vo.poi;
+package com.interest.points.vos.poi;
 
 
 import com.interest.points.model.Category;
@@ -6,7 +6,7 @@ import com.interest.points.model.Category;
 import java.util.HashSet;
 import java.util.Set;
 
-public class PoiVOResponse {
+public class PointVOResponse {
     private Long id;
     private String name;
     private int x;
@@ -15,7 +15,7 @@ public class PoiVOResponse {
     private String closingHours;
     private Set<Category> categories = new HashSet<>();;
 
-    public PoiVOResponse() {
+    public PointVOResponse() {
     }
 
     public Long getId() {

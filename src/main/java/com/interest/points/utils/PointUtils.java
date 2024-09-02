@@ -10,11 +10,6 @@ public class PoiUtils {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
-    public static boolean isWithinProximity(int refX, int refY, Poi poi) {
-        double distance = distance(refX, refY, poi.getX(), poi.getY());
-        return distance <= poi.getInfluenceRadius();
-    }
-
     public static boolean isOpenAt(LocalTime now, String openingHours, String closingHours) {
         if (openingHours.equals("ALL DAY")) {
             return true;

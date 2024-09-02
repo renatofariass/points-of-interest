@@ -20,27 +20,25 @@ public class Poi implements Serializable {
     private int y;
     private String openingHours;
     private String closingHours;
-    private int influenceRadius;
     @ManyToMany
     @JoinTable(
             name = "poi_category",
             joinColumns = @JoinColumn(name = "poi_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> categories = new HashSet<>();;
+    private Set<Category> categories = new HashSet<>();
+    ;
 
     public Poi() {
     }
 
-    public Poi(Long id, String name, int x, int y, String openingHours, String closingHours,
-               int influenceRadius, Set<Category> categories) {
+    public Poi(Long id, String name, int x, int y, String openingHours, String closingHours, Set<Category> categories) {
         this.id = id;
         this.name = name;
         this.x = x;
         this.y = y;
         this.openingHours = openingHours;
         this.closingHours = closingHours;
-        this.influenceRadius = influenceRadius;
         this.categories = categories;
     }
 
@@ -90,14 +88,6 @@ public class Poi implements Serializable {
 
     public void setClosingHours(String closingHours) {
         this.closingHours = closingHours;
-    }
-
-    public int getInfluenceRadius() {
-        return influenceRadius;
-    }
-
-    public void setInfluenceRadius(int influenceRadius) {
-        this.influenceRadius = influenceRadius;
     }
 
     public Set<Category> getCategories() {
