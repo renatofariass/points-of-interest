@@ -1,4 +1,4 @@
-package com.interest.points.vo.user;
+package com.interest.points.vos.user;
 
 import java.io.Serializable;
 import java.util.Date;

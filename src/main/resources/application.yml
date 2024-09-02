@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres?timezone=America/Sao_Paulo
+    url: jdbc:postgresql://localhost:5432/postgres
     username: ${USERNAME}
     password: ${PASSWORD}
+
   jpa:
     properties:
       hibernate:
@@ -12,4 +13,7 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: none
-    show-sql: false
+    show-sql: true
+
+security:
+    token:
