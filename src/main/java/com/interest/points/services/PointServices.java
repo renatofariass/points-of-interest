@@ -1,14 +1,14 @@
-package com.interest.points.service;
+package com.interest.points.services;
 
 import com.interest.points.exceptions.ResourceNotFoundException;
 import com.interest.points.mapper.ModelMapperConverter;
 import com.interest.points.model.Category;
-import com.interest.points.model.Poi;
-import com.interest.points.repository.CategoryRepository;
-import com.interest.points.repository.PoiRepository;
-import com.interest.points.utils.PoiUtils;
-import com.interest.points.vo.poi.PoiVORequest;
-import com.interest.points.vo.poi.PoiVOResponse;
+import com.interest.points.model.Point;
+import com.interest.points.repositories.CategoryRepository;
+import com.interest.points.repositories.PointRepository;
+import com.interest.points.utils.PointUtils;
+import com.interest.points.vos.point.PointVORequest;
+import com.interest.points.vos.point.PointVOResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,56 +18,56 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class PoiService {
+public class PointServices {
     @Autowired
-    private PoiRepository poiRepository;
+    private PointRepository pointRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<PoiVOResponse> findAllPois() {
-        return ModelMapperConverter.parseListObjects(poiRepository.findAll(), PoiVOResponse.class);
+    public List<PointVOResponse> findAllPoints() {
+        return ModelMapperConverter.parseListObjects(pointRepository.findAll(), PointVOResponse.class);
     }
 
-    public List<PoiVOResponse> findNearbyPois(List<String> categories, int x, int y,
-                                              int maxDistance) {
+    public List<PointVOResponse> findNearbyPoints(List<String> categories, int x, int y,
+                                                int maxDistance) {
 
-        List<Poi> poisWithinProximity = poiRepository.findPoisWithinProximity(
+        List<Point> pointsWithinProximity = pointRepository.findPointsWithinProximity(
                 x - maxDistance, y - maxDistance,  x + maxDistance, y + maxDistance);
 
-        var poisList = poisWithinProximity.stream()
-                .filter(poi -> categories == null || categories.isEmpty() ||
-                        poi.getCategories().stream().anyMatch(category -> categories.contains(category.getName())))
-                .filter(poi -> PoiUtils.distance(x, y, poi.getX(), poi.getY()) <= maxDistance)
-                .filter(poi -> PoiUtils.isOpenAt(LocalTime.now(), poi.getOpeningHours(), poi.getClosingHours()))
+        var pointsList = pointsWithinProximity.stream()
+                .filter(point -> categories == null || categories.isEmpty() ||
+                        point.getCategories().stream().anyMatch(category -> categories.contains(category.getName())))
+                .filter(point -> PointUtils.distance(x, y, point.getX(), point.getY()) <= maxDistance)
+                .filter(point -> PointUtils.isOpenAt(LocalTime.now(), point.getOpeningHours(), point.getClosingHours()))
                 .collect(Collectors.toList());
 
-        return ModelMapperConverter.parseListObjects(poisList, PoiVOResponse.class);
+        return ModelMapperConverter.parseListObjects(pointsList, PointVOResponse.class);
     }
 
-    public List<PoiVOResponse> findNearbyPoisWithoutTimeFilter(List<String> categories, int x, int y,
-                                                               int maxDistance) {
-        List<Poi> poisWithinProximity = poiRepository.findPoisWithinProximity(
+    public List<PointVOResponse> findNearbyPointsWithoutTimeFilter(List<String> categories, int x, int y,
+                                                                 int maxDistance) {
+        List<Point> pointsWithinProximity = pointRepository.findPointsWithinProximity(
                 x - maxDistance, y - maxDistance,  x + maxDistance, y + maxDistance);
 
-        var poisList = poisWithinProximity.stream()
-                .filter(poi -> PoiUtils.distance(x, y, poi.getX(), poi.getY()) <= maxDistance)
-                .filter(poi -> categories == null || categories.isEmpty() ||
-                        poi.getCategories().stream().anyMatch(category -> categories.contains(category.getName())))
+        var pointsList = pointsWithinProximity.stream()
+                .filter(point -> PointUtils.distance(x, y, point.getX(), point.getY()) <= maxDistance)
+                .filter(point -> categories == null || categories.isEmpty() ||
+                        point.getCategories().stream().anyMatch(category -> categories.contains(category.getName())))
                 .collect(Collectors.toList());
 
-        return ModelMapperConverter.parseListObjects(poisList, PoiVOResponse.class);
+        return ModelMapperConverter.parseListObjects(pointsList, PointVOResponse.class);
     }
 
-    public PoiVOResponse createPoi(PoiVORequest poiVoRequest) {
-        Set<Category> categories = poiVoRequest.getCategories().stream()
+    public PointVOResponse createPoint(PointVORequest pointVoRequest) {
+        Set<Category> categories = pointVoRequest.getCategories().stream()
                 .map(categoryName -> categoryRepository.findByName(categoryName)
                         .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + categoryName)))
                 .collect(Collectors.toSet());
 
-        Poi poi = ModelMapperConverter.parseObject(poiVoRequest, Poi.class);
-        poi.setCategories(categories);
+        Point point = ModelMapperConverter.parseObject(pointVoRequest, Point.class);
+        point.setCategories(categories);
 
-        return ModelMapperConverter.parseObject(poiRepository.save(poi), PoiVOResponse.class);
+        return ModelMapperConverter.parseObject(pointRepository.save(point), PointVOResponse.class);
     }
 }
