@@ -32,11 +32,8 @@ public class JwtTokenFilter extends GenericFilterBean {
             if (authentication != null) {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-            else {
-                throw new ServletException("Invalid token");
-            }
-        }
 
-        filterChain.doFilter(servletRequest, servletResponse);
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
     }
 }
